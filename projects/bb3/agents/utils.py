@@ -440,7 +440,10 @@ class MemoryUtils:
         if not memory:
             return memories
         assert memory not in memories
-        memories[memory] = 0
+        if isinstance(memories, dict):
+            memories[memory] = 0
+        else:
+            memories.append(memory)
         return memories
 
     @staticmethod

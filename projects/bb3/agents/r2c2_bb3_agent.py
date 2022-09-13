@@ -451,7 +451,7 @@ class BlenderBot3Agent(ModularAgentMixin):
             self.agents[Module.SEARCH_KNOWLEDGE.agent_name()] = agent
             self.agents[Module.SEARCH_KNOWLEDGE] = agent
 
-        self.dictionary = self.agents[Module.SEARCH_KNOWLEDGE.agent_name()].dictionary
+        self.dictionary = self.agents[Module.SEARCH_KNOWLEDGE.agent_name()].build_dictionary()
         # Memories is a mapping from memory to turns_since_used.
         self.memories: Dict[str, int] = {}
         self.in_session_memories = set()

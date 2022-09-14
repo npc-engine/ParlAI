@@ -345,6 +345,12 @@ class BlenderBot3Agent(ModularAgentMixin):
             'generating from the MKM',
         )
         parser.add_argument(
+            '--init-memory-from-file',
+            type=str,
+            default=None,
+            help='If specified, initialize the memory from the file',
+        )
+        parser.add_argument(
             '--memory-overlap-threshold',
             type=float,
             default=0.0,
@@ -495,6 +501,13 @@ class BlenderBot3Agent(ModularAgentMixin):
                     pass
 
         super().__init__(opt, shared)
+        if self.opt['init_memory_from_file']:
+            fp = self.opt['init_memory_from_file']
+            logging.info(f"Loading memories from {fp}")
+            with open(fp) as f:
+                memories = [f.read().strip()]
+            self.agents[Module.MEMORY_KNOWLEDGE].set_memory(memories * self.opt['batchsize'])
+                        
 
     def _init_top_agent(self, opt: Opt) -> Agent:
         """

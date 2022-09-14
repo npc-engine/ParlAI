@@ -500,14 +500,7 @@ class BlenderBot3Agent(ModularAgentMixin):
                 except AttributeError:
                     pass
 
-        super().__init__(opt, shared)
-        if self.opt['init_memory_from_file']:
-            fp = self.opt['init_memory_from_file']
-            logging.info(f"Loading memories from {fp}")
-            with open(fp) as f:
-                memories = [f.read().strip()]
-            self.agents[Module.MEMORY_KNOWLEDGE].set_memory(memories * self.opt['batchsize'])
-                        
+        super().__init__(opt, shared)                        
 
     def _init_top_agent(self, opt: Opt) -> Agent:
         """
@@ -1346,6 +1339,12 @@ class BlenderBot3Agent(ModularAgentMixin):
         # First, determine whether we're searching or accessing memory
         try:
             memory_to_set = self.get_available_memories(observations)
+            if self.opt['init_memory_from_file']:
+                fp = self.opt['init_memory_from_file']
+                logging.info(f"Loading memories from {fp}")
+                with open(fp) as f:
+                    memories = [f.read().strip()]
+                memory_to_set = [[*m1, *m2] for m1, m2 in zip(memory_to_set, memories)]
             self.agents[Module.MEMORY_KNOWLEDGE].set_memory(memory_to_set)
             available_memory = self.agents[Module.MEMORY_KNOWLEDGE].get_memory()
         except AttributeError:

@@ -461,7 +461,10 @@ class MemoryUtils:
         :return memories:
             return memories with usage updated
         """
-        assert not used_memory or used_memory in memories
+        if not used_memory:
+            return memories
+        if used_memory not in memories:
+            memories[used_memory] = 0
         for mem in memories:
             if mem == used_memory:
                 memories[mem] = 0

@@ -21,6 +21,7 @@ from collections import defaultdict
 import copy
 import torch
 from types import MethodType
+import traceback
 from typing import List, Tuple, Optional, Dict, Any, Union
 
 from parlai.agents.rag.retrievers import (
@@ -1347,7 +1348,8 @@ class BlenderBot3Agent(ModularAgentMixin):
                 memory_to_set = [[*m1, *m2] for m1, m2 in zip(memory_to_set, memories)]
             self.agents[Module.MEMORY_KNOWLEDGE].set_memory(memory_to_set)
             available_memory = self.agents[Module.MEMORY_KNOWLEDGE].get_memory()
-        except AttributeError:
+        except AttributeError as e:
+            print(f"Error: {e}, traceback: {traceback.format_exc()}")
             # Gold Docs
             available_memory = [[]] * len(observations)
             pass

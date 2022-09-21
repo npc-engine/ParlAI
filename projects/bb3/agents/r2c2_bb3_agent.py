@@ -458,16 +458,12 @@ class BlenderBot3Agent(ModularAgentMixin):
             self.agents[Module.SEARCH_KNOWLEDGE.agent_name()] = agent
             self.agents[Module.SEARCH_KNOWLEDGE] = agent
 
-<<<<<<< HEAD
-        self.dictionary = self.agents[Module.SEARCH_KNOWLEDGE.agent_name()].build_dictionary()
-=======
         if hasattr(agent, 'dictionary'):
             # OPT
             self.dictionary = agent.dictionary
         else:
             # R2C2
             self.dictionary = agent.dict
->>>>>>> 9f7fc0be0f2f618f37ed2b493ce8e7892c729875
         # Memories is a mapping from memory to turns_since_used.
         self.memories: Dict[str, int] = {}
         self.in_session_memories = set()

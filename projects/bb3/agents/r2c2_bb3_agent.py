@@ -458,7 +458,16 @@ class BlenderBot3Agent(ModularAgentMixin):
             self.agents[Module.SEARCH_KNOWLEDGE.agent_name()] = agent
             self.agents[Module.SEARCH_KNOWLEDGE] = agent
 
+<<<<<<< HEAD
         self.dictionary = self.agents[Module.SEARCH_KNOWLEDGE.agent_name()].build_dictionary()
+=======
+        if hasattr(agent, 'dictionary'):
+            # OPT
+            self.dictionary = agent.dictionary
+        else:
+            # R2C2
+            self.dictionary = agent.dict
+>>>>>>> 9f7fc0be0f2f618f37ed2b493ce8e7892c729875
         # Memories is a mapping from memory to turns_since_used.
         self.memories: Dict[str, int] = {}
         self.in_session_memories = set()
@@ -1338,6 +1347,7 @@ class BlenderBot3Agent(ModularAgentMixin):
             return batchsize-length list of final replies.
         """
         # First, determine whether we're searching or accessing memory
+        all_memory: List[Dict[str, int]] = [o['raw']['memories'] for o in observations]
         try:
             memory_to_set = self.get_available_memories(observations)
             if self.opt['init_memory_from_file']:
@@ -1439,7 +1449,7 @@ class BlenderBot3Agent(ModularAgentMixin):
             batch_reply_mgm_partner,
             batch_reply_knowledge,
             batch_reply_dialogue,
-            available_memory,
+            all_memory,
         )
 
         return final_batch_reply
